@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Search{% endblock title %}
+{% block body %}
+<div class="container my-4">
+    <h2>Search Results for "{{ query }}"</h2>
+    {% if error %}
+    <div class="alert alert-warning text-center mb-3">{{ error }}</div>
+    {% endif %}
+    {% if results %}
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Sr.No</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for todo in results %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ todo.title }}</td>
+                <td>{{ todo.desc }}</td>
+                <td>{{ todo.date_created.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                <td>
+                    <a href="/delete/{{ todo.srno }}" class="btn btn-outline-danger btn-sm">Delete</a>
+                    <a href="/update/{{ todo.srno }}" class="btn btn-outline-primary btn-sm">Update</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="alert alert-warning">No matching results found.</div>
+    {% endif %}
+</div>
+{% endblock body %}

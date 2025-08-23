@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %} Reviews {% endblock title %}
+{% block reviews %} active {% endblock reviews %}
+{% block body %}
+<div class="container my-4">
+    <h2 class="mb-3">User Reviews</h2>
+    {% if username %}
+    <form action="/reviews" method="POST">
+        <div class="mb-3">
+            <textarea name="content" class="form-control" rows="3" placeholder="Write your review..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">Submit</button>
+    </form>
+    {% else %}
+    <div class="alert alert-info text-center mb-3">
+        You must <a href="/login">Login</a> to post a review.
+    </div>
+    {% endif %}
+
+    <!-- To show all reviews -->
+    {% if reviews %}
+    <ul class="list-group">
+        {% for review in reviews %}
+        <li class="list-group-item">
+            <strong>{{ review.user.username }}</strong>
+            <small class="text-muted">on {{strftime('%d-%m-%Y %H:%M:%S')}}</small>
+            <p class="mt-2">{{ review.content }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <div class="alert alert-secondary my-3">No reviews yet. Be the first to write one!</div>
+    {% endif %}
+
+</div>
+{% endblock body %}

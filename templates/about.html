@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock title %}
+{% block about %}active{% endblock about %}
+{% block body %}
+<div class="container my-3">
+    <h2>How to Use the To-Do App</h2>
+    <ol>
+        <li>Enter the <strong>Title</strong> of your task in the Title field.</li>
+        <li>Enter a brief <strong>Description</strong> of the task.</li>
+        <li>Click the <strong>Submit</strong> button to save your task.</li>
+    </ol>
+
+    <h2>Delete a Task</h2>
+    <p>To remove a task, click the <strong>Delete</strong> button next to it in the list.</p>
+
+    <h2>Update a Task</h2>
+    <ol>
+        <li>Click the <strong>Update</strong> button next to the task you want to modify.</li>
+        <li>Edit the <strong>Title</strong> or <strong>Description</strong> as needed.</li>
+        <li>Click <strong>Update</strong> to save your changes.</li>
+    </ol>
+</div>
+{% endblock body %}
