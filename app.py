@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from datetime import datetime
 import bcrypt
+import os
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///todo.db'
@@ -227,4 +228,5 @@ admin.add_view(SecureModelView(User, db.session))
 admin.add_view(SecureModelView(Reviews, db.session))
 
 if __name__ == '__main__':
-    app.run(debug = False)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
