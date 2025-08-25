@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
+from flask_admin import Admin
+from flask_admin.contrib.sqla import ModelView
+from flask import url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 from datetime import datetime
@@ -25,6 +28,7 @@ class User(db.Model):
     username = db.Column(db.String(100), nullable = False)
     email = db.Column(db.String(100), unique = True)
     password = db.Column(db.String(100), nullable = False)
+    is_admin = db.Column(db.Boolean, default = False)
 
     todos = db.relationship('Todo', backref = 'user', lazy = True)
 
@@ -209,6 +213,18 @@ def reviews():
     all_reviews = Reviews.query.order_by(Reviews.date_created.desc()).all()
     return render_template('reviews.html', reviews = all_reviews, username = user.username if user else None)
 
+class SecureModelView(ModelView):
+    def is_accessible(self):
+        user = get_current_user()
+        return user is not None and user.is_admin
+    
+    def inaccessible_callback(self, name, **kwargs):
+        return redirect(url_for('login', next = request.url))
+    
+admin = Admin(app, name = 'Admin Panel', template_mode = 'bootstrap4')
+
+admin.add_view(SecureModelView(User, db.session))
+admin.add_view(SecureModelView(Reviews, db.session))
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = False)
